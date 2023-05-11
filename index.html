@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +7,34 @@
   <title>Local Storage</title>
 </head>
 <body>
-  <main></main>
+  <main>
+
+    <form id="form" name="form">
+      <ul>
+      <li class="name-section">
+        <label for="name">Nombre</label>
+        <input type="text" id="name" name="name" placeholder="Dejame tu nombre" required>
+      </li>
+      <li class="email-section">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Dirección de correo" required>
+      </li>
+      <li class="messge-section">
+        <label for="messge">Mensaje</label>
+        <input type="text" name="messge" id="messge" placeholder="Escribe aquí tu mensaje" required>
+      </li>
+      <li class="email-section">
+        <label for="url">Mensaje</label>
+        <input type="text" name="url" id="url" placeholder="URL imagen" required>
+      </li>
+      <div class="form-btns">
+        <input class="btn reset" type="reset" value="Reset"></input>
+        <input class="btn submit" type="submit" value="Enviar"></input>
+        <input class="btn modify" type="button" value="Editar"></input>
+      </div>
+      </ul>
+    </form>
+
+  </main>
 </body>
 </html>
