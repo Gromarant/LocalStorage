@@ -26,3 +26,17 @@ const showData = (name) => {
   }
 }
 showData('contactData');
+
+
+/*4. Usa JSON.parse() y JSON.stringify() para guardar muchos datos usando la misma clave */
+const addMoreData = () => {
+  return fetch('https://rickandmortyapi.com/api/character')
+                                                        .then(res=>res.json())
+                                                        .then(users => safeOnLocal('contactData', users.results))
+                                                        .catch(error => console.log(error));
+}
+const safeOnLocal = (key, usersData) => {
+  JSON.parse(localStorage.getItem(key));
+  localStorage.setItem(key, JSON.stringify(usersData));
+}
+addMoreData();
