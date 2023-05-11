@@ -13,6 +13,7 @@ const handleForm = (e) => {
     url: e.target.url.value
   }]
   localStorage.setItem('contactData', JSON.stringify(contactData));
+  showData('contactData');
 };
 document.querySelector('form').addEventListener('submit', handleForm);
 
@@ -25,7 +26,6 @@ const showData = (name) => {
     document.querySelector(`.${key[0]}`).innerHTML = `${key[1]}`;
   }
 }
-showData('contactData');
 
 
 /*4. Usa JSON.parse() y JSON.stringify() para guardar muchos datos usando la misma clave */
@@ -40,3 +40,8 @@ const safeOnLocal = (key, usersData) => {
   localStorage.setItem(key, JSON.stringify(usersData));
 }
 addMoreData();
+
+/* 2. Avanzado - Local Storage
+Crea botón para borrar todos los contactos guardados en Local Storage */
+const clearBtn = document.querySelector('input.clear-ls');
+clearBtn.addEventListener('click', () => localStorage.clear());
