@@ -45,3 +45,14 @@ addMoreData();
 Crea botón para borrar todos los contactos guardados en Local Storage */
 const clearBtn = document.querySelector('input.clear-ls');
 clearBtn.addEventListener('click', () => localStorage.clear());
+
+/* Crea botón para borrar un contacto en concreto de Local Storage. */
+const removeBtn = document.querySelector('.remove-contact');
+const contactToRemove = document.querySelector('#contactName');
+
+const handleRemove = () => {
+  if (contactToRemove) {
+    localStorage.removeItem(contactToRemove.value)
+  };
+}
+removeBtn.addEventListener('click', handleRemove);
