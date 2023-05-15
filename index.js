@@ -1,58 +1,63 @@
-/*1. Crear un formulario de contacto con los siguientes campos:
-Nombre,Email, Mensaje, URL imagen */
+const contactsKey = 'users';
 
-/*2. Guardar en Local Storage los datos de contacto enviados de cada usuario,
-* La structura de datos de usuarios consistirá en un array de objetos [{..},{..},{..}...{..}] almacenado en Local Storage */
+//form initialization
+const setContactList = () => {
+  localStorage.setItem(contactsKey, JSON.stringify([]));
+  const list = document.createElement('ul');
+  list.className = 'contactList';
+  document.querySelector('main').appendChild(list);
+}
+setContactList();
+
+//2. Guardar en Local Storage 
 const handleForm = (e) => {
   e.preventDefault();
   
-  const contactData = [{
+  const user = {
     name: e.target.name.value,
     email: e.target.email.value,
     message: e.target.messge.value,
-    url: e.target.url.value
-  }]
-  localStorage.setItem('contactData', JSON.stringify(contactData));
-  showData('contactData');
+    url: e.target.url.value,
+  }
+
+  let users = JSON.parse(localStorage.getItem(contactsKey))
+  users.push(user);
+  localStorage.setItem(contactsKey, JSON.stringify(users));
+  paintOnDom(contactsKey);
+
+  e.target.name.value = '';
+  e.target.email.value = '';
+  e.target.messge.value = '';
+  e.target.url.value = '';
 };
 document.querySelector('form').addEventListener('submit', handleForm);
 
 
-/*3. Mostrar los datos de los contactos guardados en el DOM */
-const showData = (name) => {
-  const localData = JSON.parse(localStorage.getItem(name));
-  const entries = Object.entries(localData[0]);
-  for (let key of entries) {
-    document.querySelector(`.${key[0]}`).innerHTML = `${key[1]}`;
-  }
+//3. Mostrar los datos de los contactos guardados en el DOM
+function paintOnDom(contactsArr) {
+  const contacts = JSON.parse(localStorage.getItem(contactsArr));
+
+    const cards = contacts.map(contact => `<li>
+                                              <article>
+                                                <img src="${contact.url}" alt="foto de perfil de ${contact.name}">
+                                                <h2 class="name">${contact.name}</h2>
+                                                <p class="email">${contact.email}</p>
+                                                <p class="message">${contact.message}</p>
+                                                <input class="btn remove-contact" type="button" value="Quitar"></input>
+                                              </article>
+                                            </li>`)
+    document.querySelector('.contactList').innerHTML = cards.join('\n');
+
+    document.querySelectorAll('.remove-contact').forEach(button => button.addEventListener('click', removeContact))
 }
 
-
-/*4. Usa JSON.parse() y JSON.stringify() para guardar muchos datos usando la misma clave */
-const addMoreData = () => {
-  return fetch('https://rickandmortyapi.com/api/character')
-                                                        .then(res=>res.json())
-                                                        .then(users => safeOnLocal('contactData', users.results))
-                                                        .catch(error => console.log(error));
+function removeContact(e) {
+  const targetContactEmail = e.target.parentElement.querySelector('.email').textContent;
+  const contacts = JSON.parse(localStorage.getItem(contactsKey));
+  const filteredContacts = contacts.filter(contact => contact.email !== targetContactEmail);
+  localStorage.setItem(contactsKey, JSON.stringify(filteredContacts));
+  paintOnDom(contactsKey);
 }
-const safeOnLocal = (key, usersData) => {
-  JSON.parse(localStorage.getItem(key));
-  localStorage.setItem(key, JSON.stringify(usersData));
-}
-addMoreData();
 
-/* 2. Avanzado - Local Storage
-Crea botón para borrar todos los contactos guardados en Local Storage */
-const clearBtn = document.querySelector('input.clear-ls');
-clearBtn.addEventListener('click', () => localStorage.clear());
-
-/* Crea botón para borrar un contacto en concreto de Local Storage. */
-const removeBtn = document.querySelector('.remove-contact');
-const contactToRemove = document.querySelector('#contactName');
-
-const handleRemove = () => {
-  if (contactToRemove) {
-    localStorage.removeItem(contactToRemove.value)
-  };
-}
-removeBtn.addEventListener('click', handleRemove);
+const cleanLocalStoragekey = (key) => localStorage.removeItem(key);
+document.querySelector('.clear-ls').addEventListener('click', () => cleanLocalStoragekey(contactsKey));
